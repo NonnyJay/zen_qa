@@ -31,23 +31,55 @@ popup_box = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.X
 #  Assert the popup box before using the Click function
 try:
     assert popup_box.is_displayed(), "Cookie popup element is not visible"
-    print("=== Cookie Popup Assertion Successful===","\n")
+    print("=== Cookie Popup Assertion Successful ===","\n")
     popup_box.click()
 except AssertionError as e:
     print(f"Assertion failed: {e}")
 
 #time.sleep(5)
 
-
-page_load = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, "//*[@id='menu-main-menu-1']/li[2]/a/span")))
+# Creating wait to allow complete loading
+home_page = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, "//*[@id='menu-main-menu-1']/li[2]/a/span")))
 
 #  Assert the Zenith homepage is successfully loaded.
 try:
-    assert page_load.is_displayed(), "Zenith homepage wasn't loaded properly"
-    print("=== Zenith Homepage Assertion Successful===","\n")
+    assert home_page.is_displayed(), "Zenith homepage wasn't loaded properly"
+    print("=== Zenith Homepage Assertion Successful ===","\n")
 except AssertionError as e:
     print(f"Assertion failed: {e}")
 
 """
-Apply Actionchain to hover on the personal
+Apply Actionchain to hover on the personal Menu
+Select the "Bank Accouts
+Select the "Current Accounts"
+Sleep time was applied to allow visibility of these actions
 """
+
+#Setup Action Chain
+actions = ActionChains(driver)
+
+# Hover on the  personal banking link to show hover menu
+personal_bank = driver.find_element(By.XPATH, "//*[@id='menu-main-menu-1']/li[2]/a/span")
+actions.move_to_element(personal_bank).perform()
+time.sleep(3)     # To allow visibility of actions
+
+#identify sub menu element - bank account
+bank_acct = driver.find_element(By.XPATH, "//*[@id='menu-main-menu-1']/li[2]/ul/li[1]/a")
+actions.move_to_element(bank_acct).perform()
+time.sleep(3)
+
+#identify sub menu element - Currents Account
+curr_acc = driver.find_element(By.XPATH, "//*[@id='menu-main-menu-1']/li[2]/ul/li[1]/ul/li[3]/a")
+actions.move_to_element(curr_acc).click().perform()
+
+# Creating wait to allow complete page loading
+home_page = WebDriverWait(driver, 15).until(EC.presence_of_element_located((By.XPATH, "//*[@id='1640']/section[2]/div/div/section/div/div[2]/div/section[1]/div/div/div/h1")))
+
+#  Assert the current accounts page is successfully loaded.
+try:
+    assert home_page.is_displayed(), "Current Account wasn't loaded successfully/Click action not performed"
+    print("=== Current Account Page Assertion Successful ===","\n")
+except AssertionError as e:
+    print(f"Assertion failed: {e}")
+
+time.sleep(10)
