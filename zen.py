@@ -82,4 +82,102 @@ try:
 except AssertionError as e:
     print(f"Assertion failed: {e}")
 
-time.sleep(10)
+#time.sleep(10)
+
+
+"""
+Validating the  Features of the "individual Current Account"
+(Check the visibility of the features list and Feature link text is clickable)
+Validating the  Requirements of the "individual Current Account"
+(Check the visibility of the requirement list and requirement link text is clickable)
+Validating the Available Channels of the "individual Current Account"
+(Check the visibility of the Available Channels list and Available Channels link text is clickable)
+"""
+
+## Instantiating expected List values for Assertion
+exp_feat_list = ['Zero account opening balance', 'Internet Banking', 'Zenith Mobile Banking app', '*966# Eazybanking', 'MasterCard/Visa/Verve debit card', 'Email/SMS Alertz', 'Cheque book']
+
+exp_req_list = ['Account opening form duly completed', 'One recent clear passport photograph of signatory', 'Identification of signatories (Driver’s License, International Passport,\nNational Identity Card or Voter’s Card)', 'Residence permit (where applicable)', 'Two independent and satisfactory references', 'Public Utility Receipt dated within the last three months (PHCN bill, water rate bill, tenement rate, rent\nreceipt, telephone bill)']
+
+exp_chn_list = ['*966# EazyBanking', 'Zenith Internet Banking', 'In-branch at any Zenith Bank branch', 'ZenithDirect – our 24/7 telephone banking', 'Zenith Bank ATM nation-wide – free cash withdrawal', 'Zenith Mobile Banking App – 24/7 on your smart phone', 'Access your account using your Zenith Bank debit card at participating merchant stores for payment of goods and services in Nigeria and anywhere in the world']
+
+time.sleep(3)
+
+# Get the relative position of the Individual Current Account section
+ind_curr_acc = driver.find_element(By.XPATH, "//*[@id='1640']/section[2]/div/div/section/div/div[2]/div/section[1]/div/div/div/h1")
+
+
+"""
+Validating the features on  Individual current account
+using relative locator functiom since other account types sections
+uses same CSS selector values
+"""
+
+# View the contents of the features list by click action
+ind_el = driver.find_element(locate_with(By.CSS_SELECTOR, "#\#features-and-benefits").below(ind_curr_acc))
+ind_el.click()
+
+# Creating wait to allow action visibility
+feat_list = WebDriverWait(driver, 2).until(EC.visibility_of_element_located((By.XPATH, "//*[@id='ui-id-2']/section/div/div/div/ul/li[1]")))
+
+#  Assert the feature and benefit link respond to click.
+try:
+    assert feat_list.is_displayed(), "Feature list is not visible/Click action not performed"
+    print("=== Individual Current Account Features Clickable Assertion Successful ===","\n")
+except AssertionError as e:
+    print(f"Assertion failed: {e}")
+
+
+# Check the  availability of the features lists on the page
+
+my_feat =  driver.find_element(locate_with(By.XPATH, "//*[@id='ui-id-2']/section/div/div/div/ul").below(ind_el))
+list_feat = my_feat.find_elements(By.XPATH, "./li")
+act_list_feat = [my_val.text for my_val in list_feat]
+#print(act_list_feat)
+
+
+#  Assert the features list on the page is same as the expected features list.
+try:
+    assert act_list_feat == exp_feat_list, "Feature list is not same as Expected"
+    print("=== Individual Current Account Features List Assertion Successful ===","\n")
+except AssertionError as e:
+    print(f"Assertion failed: {e}")
+
+
+
+
+"""
+Validating the requirement details on  Individual current account
+using relative locator functiom since other account types sections
+uses same CSS selector values
+"""
+
+# View the contents of the requirement list by click action
+ind_req = driver.find_element(locate_with(By.CSS_SELECTOR, "#\#requirements").below(ind_curr_acc))
+ind_req.click()
+
+# Creating wait to allow action visibility
+req_list = WebDriverWait(driver, 2).until(EC.visibility_of_element_located((By.XPATH, "//*[@id='ui-id-4']/section/div/div/div/ul/li[1]")))
+
+#  Assert the requirements link respond to click.
+try:
+    assert req_list.is_displayed(), "Requirements list is not visible/Click action not performed"
+    print("=== Individual Current Account Requirements Clickable Assertion Successful ===","\n")
+except AssertionError as e:
+    print(f"Assertion failed: {e}")
+
+
+# Check the  availability of the requirements lists on the page
+
+my_reqs =  driver.find_element(locate_with(By.XPATH, "//*[@id='ui-id-4']/section/div/div/div/ul").below(ind_el))
+list_req = my_reqs.find_elements(By.XPATH, "./li")
+act_list_req = [my_req.text for my_req in list_req]
+
+
+
+#  Assert the requirements list on the page is same as the expected requirement list.
+try:
+    assert act_list_feat == exp_feat_list, "Requirements list is not same as Expected"
+    print("=== Individual Current Account Requirements List Assertion Successful ===","\n")
+except AssertionError as e:
+    print(f"Assertion failed: {e}")
