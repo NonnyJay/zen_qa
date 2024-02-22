@@ -118,7 +118,7 @@ ind_el = driver.find_element(locate_with(By.CSS_SELECTOR, "#\#features-and-benef
 ind_el.click()
 
 # Creating wait to allow action visibility
-feat_list = WebDriverWait(driver, 2).until(EC.visibility_of_element_located((By.XPATH, "//*[@id='ui-id-2']/section/div/div/div/ul/li[1]")))
+feat_list = WebDriverWait(driver, 3).until(EC.visibility_of_element_located((By.XPATH, "//*[@id='ui-id-2']/section/div/div/div/ul/li[1]")))
 
 #  Assert the feature and benefit link respond to click.
 try:
@@ -145,7 +145,6 @@ except AssertionError as e:
 
 
 
-
 """
 Validating the requirement details on  Individual current account
 using relative locator functiom since other account types sections
@@ -157,7 +156,7 @@ ind_req = driver.find_element(locate_with(By.CSS_SELECTOR, "#\#requirements").be
 ind_req.click()
 
 # Creating wait to allow action visibility
-req_list = WebDriverWait(driver, 2).until(EC.visibility_of_element_located((By.XPATH, "//*[@id='ui-id-4']/section/div/div/div/ul/li[1]")))
+req_list = WebDriverWait(driver, 3).until(EC.visibility_of_element_located((By.XPATH, "//*[@id='ui-id-4']/section/div/div/div/ul/li[1]")))
 
 #  Assert the requirements link respond to click.
 try:
@@ -177,7 +176,48 @@ act_list_req = [my_req.text for my_req in list_req]
 
 #  Assert the requirements list on the page is same as the expected requirement list.
 try:
-    assert act_list_feat == exp_feat_list, "Requirements list is not same as Expected"
+    assert act_list_req == exp_req_list, "Requirements list is not same as Expected"
     print("=== Individual Current Account Requirements List Assertion Successful ===","\n")
 except AssertionError as e:
     print(f"Assertion failed: {e}")
+
+
+
+"""
+Validating the Available channel details on Individual current account
+using relative locator functiom since other account types sections
+uses same CSS selector values
+"""
+
+# View the contents of the Available channels list by click action
+ind_chn = driver.find_element(locate_with(By.CSS_SELECTOR, "#\#available-channels").below(ind_curr_acc))
+ind_chn.click()
+
+# Creating wait to allow action visibility
+chn_list = WebDriverWait(driver, 3).until(EC.visibility_of_element_located((By.XPATH, "//*[@id='ui-id-6']/section/div/div/div/ul/li[1]")))
+
+#  Assert the available channels link respond to click.
+try:
+    assert chn_list.is_displayed(), "Available Channels list is not visible/Click action not performed"
+    print("=== Individual Current Account Available Channel Clickable Assertion Successful ===","\n")
+except AssertionError as e:
+    print(f"Assertion failed: {e}")
+
+
+# Check the  availability of the requirements lists on the page
+
+my_chans =  driver.find_element(locate_with(By.XPATH, "//*[@id='ui-id-6']/section/div/div/div/ul").below(ind_el))
+list_chn = my_chans.find_elements(By.XPATH, "./li")
+act_list_chn = [my_chn.text for my_chn in list_chn]
+
+
+#  Assert the requirements list on the page is same as the expected requirement list.
+try:
+    assert act_list_chn == exp_chn_list, "Available Channels list is not same as Expected"
+    print("=== Individual Current Account Available Channel List Assertion Successful ===","\n")
+except AssertionError as e:
+    print(f"Assertion failed: {e}")
+
+
+
+time.sleep(10)
